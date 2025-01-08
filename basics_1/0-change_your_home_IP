@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-#supp and add old input 
+# configures an Ubuntu server with the below requirements.
 
 sed -i '/localhost/d' /etc/hosts
 sed -i '/facebook.com/d' /etc/hosts
