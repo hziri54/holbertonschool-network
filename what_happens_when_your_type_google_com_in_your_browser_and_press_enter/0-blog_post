@@ -1,0 +1,29 @@
+1. **Serveur Supplémentaire** :
+   - Ajout d'un serveur pour répartir les tâches (web, application ou base de données).
+   - Permet de mieux gérer la charge en cas d'augmentation du trafic.
+
+2. **2 Load Balancers (Cluster HAProxy)** :
+   - **Pourquoi ?** : Améliore la répartition du trafic et la disponibilité. Si un load balancer échoue, l'autre prend le relais.
+   - **Configuration** : Les deux load balancers distribuent le trafic entre les serveurs web et d'application.
+
+3. **Séparation des Composants sur des Serveurs Dédiés** :
+   - **Serveur Web** : Gère les requêtes HTTP(S) et sert les fichiers statiques (Nginx).
+   - **Serveur d'Application** : Exécute la logique métier et gère les requêtes dynamiques.
+   - **Serveur de Base de Données** : Gère les requêtes de base de données, séparé des autres services pour éviter la concurrence des ressources.
+
+---
+
+### **Pourquoi ajouter ces éléments ?** :
+1. **Serveur Supplémentaire** : Permet d'augmenter la scalabilité, en répartissant les tâches entre plusieurs serveurs.
+2. **2 Load Balancers (Cluster)** : Assure la haute disponibilité et améliore la distribution du trafic, réduisant les risques de défaillance unique.
+3. **Séparation des Composants** : 
+   - **Serveur Web** : Réduit la charge sur l'application et améliore la gestion des fichiers statiques.
+   - **Serveur d'Application** : Gère la logique métier et le contenu dynamique, permettant de mieux scaler.
+   - **Serveur de Base de Données** : Optimise les performances en isolant la gestion des données des autres services.
+
+---
+
+### **Résumé** :
+1. **Serveur Supplémentaire** : Pour une meilleure répartition de la charge.
+2. **2 Load Balancers (Cluster)** : Pour une répartition efficace et une haute disponibilité.
+3. **Séparation des Composants** : Pour une gestion indépendante et une évolutivité optimale de chaque composant (web, app, DB).
