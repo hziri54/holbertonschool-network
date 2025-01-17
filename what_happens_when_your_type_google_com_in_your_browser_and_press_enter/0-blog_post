@@ -1,29 +1,34 @@
-1. **Serveur Supplémentaire** :
-   - Ajout d'un serveur pour répartir les tâches (web, application ou base de données).
-   - Permet de mieux gérer la charge en cas d'augmentation du trafic.
+# Que se passe-t-il lorsque vous tapez https://www.google.com dans votre navigateur et appuyez sur Entrée ?
 
-2. **2 Load Balancers (Cluster HAProxy)** :
-   - **Pourquoi ?** : Améliore la répartition du trafic et la disponibilité. Si un load balancer échoue, l'autre prend le relais.
-   - **Configuration** : Les deux load balancers distribuent le trafic entre les serveurs web et d'application.
+Lorsque vous tapez "https://www.google.com" dans votre navigateur et appuyez sur Entrée, une série de processus se déclenche pour vous permettre d’accéder à la page Web. Voici une explication détaillée de chaque étape clé qui se déroule en coulisses :
 
-3. **Séparation des Composants sur des Serveurs Dédiés** :
-   - **Serveur Web** : Gère les requêtes HTTP(S) et sert les fichiers statiques (Nginx).
-   - **Serveur d'Application** : Exécute la logique métier et gère les requêtes dynamiques.
-   - **Serveur de Base de Données** : Gère les requêtes de base de données, séparé des autres services pour éviter la concurrence des ressources.
+## 1. **Requête DNS**
+La première étape consiste à résoudre l'adresse "www.google.com" en une adresse IP. Cette tâche est accomplie par le **DNS (Domain Name System)**, qui fonctionne comme un annuaire téléphonique de l'internet. Le navigateur envoie une requête DNS pour obtenir l'adresse IP associée à "www.google.com". Si l'adresse est déjà dans le cache local, la réponse est retournée immédiatement. Sinon, le navigateur interroge un serveur DNS pour récupérer cette information.
+
+## 2. **TCP/IP**
+Une fois que l'adresse IP de "www.google.com" est obtenue, le navigateur établit une **connexion TCP (Transmission Control Protocol)** à cette adresse IP. TCP est un protocole de communication qui garantit que les données sont envoyées et reçues de manière fiable entre le client (votre ordinateur) et le serveur Web. Lors de cette étape, une **connexion à l'adresse IP** de Google est établie sur le port 443 (par défaut pour HTTPS).
+
+Le protocole **IP (Internet Protocol)** prend en charge l'adressage des paquets de données et leur acheminement entre votre appareil et le serveur Google.
+
+## 3. **Pare-feu**
+Avant même d'atteindre le serveur web de Google, les paquets de données peuvent être filtrés par des **pare-feu**. Un pare-feu est un système de sécurité qui examine le trafic réseau entrant et sortant et bloque les paquets qui ne respectent pas les règles de sécurité définies. Cela peut inclure des filtrages pour protéger contre les attaques par déni de service (DDoS) ou les tentatives d'accès non autorisées.
+
+## 4. **HTTPS/SSL**
+Avant que toute donnée soit envoyée au serveur de Google, le navigateur et le serveur établissent une connexion sécurisée via **HTTPS (Hypertext Transfer Protocol Secure)**. Cela signifie que les informations envoyées entre votre navigateur et Google sont cryptées grâce à un **SSL/TLS** (Secure Sockets Layer / Transport Layer Security). Ce processus d'encryption empêche que vos données personnelles, telles que votre mot de passe ou vos informations bancaires, ne soient interceptées par des attaquants.
+
+## 5. **Load Balancer**
+Une fois la connexion sécurisée établie, la requête peut être envoyée à un **load balancer** (équilibreur de charge). Google utilise des load balancers pour distribuer les demandes entrantes entre plusieurs serveurs web afin de ne pas surcharger un seul serveur. Cela permet également d'optimiser la disponibilité et de garantir des performances élevées même en cas de fort trafic.
+
+## 6. **Serveur Web**
+Une fois que la requête a atteint le serveur correct, elle est traitée par un **serveur web**. Google utilise des serveurs web comme **Nginx** ou **Apache** pour gérer les requêtes HTTP/HTTPS et rendre la page Web. Le serveur web interprète la demande, envoie les fichiers nécessaires (HTML, CSS, JavaScript, images, etc.) et génère la réponse à afficher dans votre navigateur.
+
+## 7. **Serveur d'Application**
+Certaines parties de la page de Google sont dynamiques et nécessitent un **serveur d'application** pour générer et traiter le contenu en fonction des actions de l'utilisateur. Par exemple, lorsqu'une recherche est effectuée, la logique de traitement de la recherche, ainsi que l'interaction avec la base de données, est effectuée par un serveur d'application. Google utilise des technologies comme **Node.js**, **Java** ou **Python** pour ce processus.
+
+## 8. **Base de Données**
+Enfin, si la requête nécessite l'accès à des données stockées (par exemple, les résultats d'une recherche ou les paramètres de l'utilisateur), un **serveur de base de données** entre en jeu. Google utilise des bases de données massivement évolutives et distribuées, telles que **Bigtable**, pour gérer les énormes volumes de données nécessaires pour fournir des résultats de recherche et d'autres services. Le serveur de base de données est responsable de stocker, récupérer et gérer les données qui alimentent les résultats de recherche.
 
 ---
 
-### **Pourquoi ajouter ces éléments ?** :
-1. **Serveur Supplémentaire** : Permet d'augmenter la scalabilité, en répartissant les tâches entre plusieurs serveurs.
-2. **2 Load Balancers (Cluster)** : Assure la haute disponibilité et améliore la distribution du trafic, réduisant les risques de défaillance unique.
-3. **Séparation des Composants** : 
-   - **Serveur Web** : Réduit la charge sur l'application et améliore la gestion des fichiers statiques.
-   - **Serveur d'Application** : Gère la logique métier et le contenu dynamique, permettant de mieux scaler.
-   - **Serveur de Base de Données** : Optimise les performances en isolant la gestion des données des autres services.
-
----
-
-### **Résumé** :
-1. **Serveur Supplémentaire** : Pour une meilleure répartition de la charge.
-2. **2 Load Balancers (Cluster)** : Pour une répartition efficace et une haute disponibilité.
-3. **Séparation des Composants** : Pour une gestion indépendante et une évolutivité optimale de chaque composant (web, app, DB).
+## Conclusion
+Lorsque vous tapez "https://www.google.com" et appuyez sur Entrée, il se passe beaucoup de choses en arrière-plan. De la résolution DNS à l'acheminement des requêtes via TCP/IP, en passant par la sécurisation avec HTTPS, l'utilisation de load balancers, et la gestion de la demande par les serveurs web, d'application et de base de données, chaque étape garantit que vous pouvez naviguer rapidement et de manière sécurisée. Ce processus complexe vous permet d’obtenir les informations que vous recherchez en quelques secondes, tout en assurant la sécurité et la fiabilité du service.
