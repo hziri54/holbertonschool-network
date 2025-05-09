@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+# Script to check if a given IP address is reachable over the network
+
+# Check if an IP address was provided as an argument
+if [ -z "$1" ]; then
+  echo "Usage: 5-is_the_host_on_the_network {IP_ADDRESS}"
+  exit 1
+fi
+
+# Send 5 ICMP echo requests (ping) to the provided IP address
+ping -c 5 "$1"
