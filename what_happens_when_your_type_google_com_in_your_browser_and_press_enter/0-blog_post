@@ -1,0 +1,38 @@
+
+What Happens When You Type https://www.google.com in Your Browser and Press Enter?
+
+This classic question is often asked in technical interviews to assess a candidate's understanding of how the web works under the hood. Here's a clear and comprehensive breakdown of everything that happens when you type https://www.google.com into your browser and hit Enter.
+1. DNS Request
+
+The first step is to resolve the human-readable domain www.google.com into a machine-understandable IP address. This is done by the Domain Name System (DNS), which functions like the internet's phonebook. Your browser first checks its local cache. If the IP address isn't there, it sends a request to a DNS resolver (typically your ISP or a third-party like Google DNS or Cloudflare) to find the IP address for the domain.
+2. TCP/IP Connection
+
+Once the IP address is found, the browser initiates a TCP (Transmission Control Protocol) connection to the server. TCP ensures reliable, ordered delivery of packets between your device and Google's servers. This connection is made to port 443, which is the default port for HTTPS.
+
+Behind TCP is IP (Internet Protocol), responsible for routing the packets across the internet from your device to Google’s servers.
+3. Firewall Filtering
+
+Before reaching the web server, your request may pass through one or more firewalls — network security systems that monitor and control traffic. Firewalls can prevent unauthorized access, mitigate attacks like DDoS, and enforce policies such as blocking unsafe IPs or ports.
+4. HTTPS/SSL Encryption
+
+The browser and server now establish a secure connection using HTTPS (HTTP Secure), which means all data sent between your browser and the server is encrypted. This is done using SSL/TLS (Secure Sockets Layer / Transport Layer Security).
+
+The browser verifies the server's SSL certificate to ensure it's legitimate and issues a handshake to securely exchange encryption keys, keeping your information safe from eavesdroppers.
+5. Load Balancer
+
+Your request is then handled by a load balancer, which is responsible for distributing incoming traffic across multiple servers. This ensures that no single server becomes overwhelmed and helps maintain high availability and fast response times.
+
+Companies like Google operate massive infrastructures and use global load balancers to route traffic based on factors like server load, location, or health checks.
+6. Web Server
+
+Once routed to the right server, a web server such as Nginx or Apache processes the HTTP request. Its role is to serve static assets (HTML, CSS, JS, images) and forward dynamic requests to the application server. The web server compiles the appropriate response and sends it back to the browser.
+7. Application Server
+
+If the page includes dynamic content (e.g., personalized recommendations, search results), the application server handles that part. It contains the business logic, executes backend operations, processes user inputs, and orchestrates the retrieval of necessary data.
+
+Google might use application stacks built with Node.js, Python, Go, or Java depending on the service.
+8. Database Server
+
+If the request involves stored data (like saved user preferences or search indexing), the application server queries a database server. Google uses highly scalable, distributed databases like Bigtable to efficiently store and retrieve massive amounts of data.
+
+The database server responds with the requested data, which the application server processes and incorporates into the response sent back to your browser.
