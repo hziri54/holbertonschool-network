@@ -1,15 +1,15 @@
 #!/usr/bin/env bash
-# This script modifies /etc/hosts so that 'localhost' resolves to 127.0.0.2 and 'facebook.com' to 8.8.8.8
+# Confugration IP home and facebook
 
 if [ "$EUID" -ne 0 ]; then
-    echo "Please run as root"
+    echo "This script must be run as root"
     exit 1
 fi
 
-# Remove any existing lines ending with 'localhost' or 'facebook.com'
-sed -i '/[[:space:]]localhost$/d' /etc/hosts
-sed -i '/[[:space:]]facebook\.com$/d' /etc/hosts
+sed -i '/localhost/d' /etc/hosts
+sed -i '/facebook.com/d' /etc/hosts
 
-# Add the desired entries if they are not already present
-grep -q "^127.0.0.2[[:space:]]\+localhost$" /etc/hosts || echo "127.0.0.2 localhost" >> /etc/hosts
-grep -q "^8.8.8.8[[:space:]]\+facebook.com$" /etc/hosts || echo "8.8.8.8 facebook.com" >> /etc/hosts
+echo "127.0.0.2 localhost" >> /etc/hosts
+echo "8.8.8.8 facebook.com" >> /etc/hosts
+
+cat /etc/hosts
